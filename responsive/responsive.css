@@ -1,1 +1,40 @@
-asgfbljdfadsbglfkjsd
+/******************** 
+Philip Miljanic
+Comp20 
+Lab 4
+responsive.css
+********************/
+/*curr dim 625x625*/
+@media screen 
+	and (min-device-width: 1600px){
+		/*Top left*/
+}
+@media screen
+	and (min-device-width: 1400px)
+	and (max-device-width: 1600px){
+	/*top right*/
+}
+@media screen
+	and (min-device-width: 1200px)
+	and (max-device-width: 1400px){
+	/*bottom left*/
+}
+@media screen
+	and (min-device-width: 1000px)
+	and (max-device-width: 1200px){
+	/*bottom right*/
+}
+@media screen
+	and (min-device-width: 800px)
+	and (max-device-width: 1000px){
+	/*bottom left*/
+}
+@media screen
+	and (min-device-width: 600px)
+	and (max-device-width: 800px){
+	/*top right*/
+}
+@media screen
+	and (max-device-width: 600px){
+	/*top left*/
+}
