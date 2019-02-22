@@ -1,1 +1,20 @@
-this my style sheet
+/******************** 
+Philip Miljanic
+Comp20 
+Lab 5
+style.css
+********************/
+
+body{
+	font-family: Arial;
+	background-color: orange;
+}
+
+#title, #lyrics {
+	text-align: center;
+}
+
+#butwehavethepower{
+	display: block;
+	margin: 0 auto;	
+}
