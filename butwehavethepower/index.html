@@ -15,12 +15,11 @@ controls></video>
 <div id="lyrics"></div>
 
 <script>
-	// Complete this section and create a CSS file named style.css
+	// Completed this section and created a CSS file named style.css
 	var video = document.getElementById("butwehavethepower");
 	var lyrics = document.getElementById("lyrics");
 
 	video.addEventListener("timeupdate", function() {
-
 		if(video.currentTime > 5.5 && video.currentTime < 7.5 ){
 			lyrics.innerHTML = "<h3>Come gather round, children,</h3>";
 		}
@@ -75,8 +74,8 @@ controls></video>
 		else {
 			lyrics.innerHTML = "";
 		}
-
-	})
+	});
+	
 </script>
 </body>
 </html>
