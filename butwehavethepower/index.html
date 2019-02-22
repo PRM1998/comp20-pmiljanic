@@ -16,6 +16,19 @@ controls></video>
 
 <script>
 	// Complete this section and create a CSS file named style.css
+	var video = document.getElementById("butwehavethepower");
+	var lyrics = document.getElementById("lyrics");
+
+	video.addEventListener("timeupdate", function() {
+
+		if(video.currentTime < 15){
+			lyrics.innerHTML = "<h3>YOOOOOOOOOO</h3>";
+		}
+		else if (video.currentTime > 15){
+			lyrics.innerHTML = "<h3>wasssssgud</h3>";
+		}
+
+	})
 </script>
 </body>
 </html>
