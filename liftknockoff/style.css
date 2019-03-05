@@ -5,7 +5,16 @@ Lab 5
 style.css
 ********************/
 
-body{
-	font-family: Arial;
-	background-color: orange;
+#map{
+	height: 100%;
+}
+
+#infowindow{
+	
+}
+
+html, body{
+	height: 100%;
+	margin: 0;
+	padding: 0;
 }
