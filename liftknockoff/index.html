@@ -27,7 +27,7 @@
 			me = new google.maps.LatLng(myLat, myLng);
 			infoWindow = new google.maps.InfoWindow();
 			var mySettings = {
-				zoom: 8, 
+				zoom: 14, 
 				center: me,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
@@ -72,6 +72,7 @@
 							}
 							else{
 								setPassengerMarker(dataArr[i]);
+								passengerHere = true;
 							}
 						}
 					}
@@ -84,6 +85,7 @@
 							}
 							else{
 								setCarMarker(dataArr[i]);
+								driverHere = true;
 							}
 						}
 					}
@@ -117,12 +119,12 @@
 			}
 
 			if(passengerHere || driverHere){
-				distance = 0;
+				distance = 1000000;
 				for(i = 0; i < dataArr.length; i++){
 					if(dataArr[i].username != "WEINERMOBILE"){
 						var coordP = new google.maps.LatLng(dataArr[i].lat, dataArr[i].lng);
 						currDistance = calcDistance(coordP);
-						if(distance < currDistance){
+						if(distance > currDistance){
 							distance = currDistance;
 						}
 					}
