@@ -3,7 +3,7 @@
 <html>
 
 <head>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9sQaGQMUn1TEZG3C11LjRlpQAppS4WGk&callback=createMap"
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9sQaGQMUn1TEZG3C11LjRlpQAppS4WGk&callback=createMap&libraries=geometry"
     async defer></script>
 	<title>Comp20 - Assignment 2</title>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -13,12 +13,12 @@
 	<script>
 		var myLat = 0;
 		var myLng = 0;
-		var me;
+		var me = {lat: 0, lng: 0};
 		var meMarker;
 		var map;
 		var infoWindow;
 		var dataArr;
-		var weinerHere = true;
+		var weinerHere;
 
 		function createMap(){			
 			getMyLocation();
@@ -67,7 +67,9 @@
 						for(i = 0; i < dataArr.length; i++){
 							if(dataArr[i].username == "WEINERMOBILE"){
 								setWeinerMarker(dataArr[i]);
-								var weinerHere = true;
+								weinerHere = true;
+								console.log(weinerHere);
+								console.log("re1")
 							}
 							else{
 								setPassengerMarker(dataArr[i]);
@@ -79,7 +81,7 @@
 						for(i = 0; i < dataArr.length; i++){
 							if(dataArr[i].username == "WEINERMOBILE"){
 								setWeinerMarker(dataArr[i]);
-								var weinerHere = true;
+								weinerHere = true;
 							}
 							else{
 								setCarMarker(dataArr[i]);
@@ -100,8 +102,9 @@
 			meMarker.setMap(map);
 
 			var infoWindowContent = meMarker.title;
-
-			if(false){
+			console.log("setMark")
+			console.log(weinerHere);
+			if(weinerHere){
 				var distance;
 				for(i = 0; i < dataArr.length; i++){
 					if(dataArr[i].username == "WEINERMOBILE"){
@@ -127,49 +130,52 @@
 		}
 
 		function calcDistance(coordinates){
-			var milesNum = ((google.maps.geometry.spherical.computeDistanceBetween(coordinates,me))/1609.34);
-			var miles = num.toFixed(4);
-			return miles;
+			//var milesNum = ((google.maps.geometry.spherical.computeDistanceBetween(coordinates,me))/1609.34);
+			//var miles = milesNum.toFixed(4);
+			return 4//miles;
 		}
 
-		function setPassengerMarker(Elem){
-			var coordP = {lat: Elem.lat , lng: Elem.lng};
+		function setPassengerMarker(elem){
+			var coordP = {lat: elem.lat , lng: elem.lng};
 			var passengerMarker = new google.maps.Marker({
 				position: coordP,
-				title: Elem.username,
+				title: elem.username,
 				icon: "passenger.png",
 			});
+			var infoWindowContent = elem.username + " is " + calcDistance(coordP) +" miles far away";
 			passengerMarker.setMap(map);
 			google.maps.event.addListener(passengerMarker, 'click', function() {
-				infoWindow.setContent(passengerMarker.title);
+				infoWindow.setContent(infoWindowContent);
 				infoWindow.open(map, passengerMarker);
 			});
 		}
 
-		function setCarMarker(Elem){
-			var coordP = {lat: Elem.lat , lng: Elem.lng};
+		function setCarMarker(elem){
+			var coordP = {lat: elem.lat , lng: elem.lng};
 			var carMarker = new google.maps.Marker({
 				position: coordP,
-				title: Elem.username,
+				title: elem.username,
 				icon: "car.png",
 			});
+			var infoWindowContent = elem.username + " is " + calcDistance(coordP) +" miles far away";
 			carMarker.setMap(map);
 			google.maps.event.addListener(carMarker, 'click', function() {
-				infoWindow.setContent(carMarker.title);
+				infoWindow.setContent(infoWindowContent);
 				infoWindow.open(map, carMarker);
 			});
 		}
 
-		function setWeinerMarker(Elem){
-			var coordP = {lat: Elem.lat , lng: Elem.lng};
+		function setWeinerMarker(elem){
+			var coordP = {lat: elem.lat , lng: elem.lng};
 			var weinerMarker = new google.maps.Marker({
 				position: coordP,
-				title: Elem.username,
+				title: elem.username,
 				icon: "weinermobile.png",
 			});
+			var infoWindowContent = elem.username + " is " + calcDistance(coordP) +" miles far away";
 			weinerMarker.setMap(map);
 			google.maps.event.addListener(weinerMarker, 'click', function() {
-				infoWindow.setContent(weinerMarker.title);
+				infoWindow.setContent(infoWindowContent);
 				infoWindow.open(map, weinerMarker);
 			});
 		}
