@@ -14,26 +14,23 @@
 		var myLat = 0;
 		var myLng = 0;
 		var me;
-		var mySettings;
-		var carMarker;
-		var weinerMarker;
-		var passengerMarkers;
 		var meMarker;
 		var map;
 		var infoWindow;
 		var dataArr;
+		var weinerHere = true;
 
 		function createMap(){			
+			getMyLocation();
 			me = new google.maps.LatLng(myLat, myLng);
 			infoWindow = new google.maps.InfoWindow();
-			mySettings = {
+			var mySettings = {
 				zoom: 8, 
 				center: me,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 			
 			map = new google.maps.Map(document.getElementById('map'), mySettings);
-			getMyLocation();
 		}
 
 		function getMyLocation(){
@@ -64,12 +61,13 @@
 
 			request.onreadystatechange = function(){
 				if (request.readyState == 4 && request.status == 200) {
-					data = JSON.parse(request.responseText);
+					var data = JSON.parse(request.responseText);
 					if(data.hasOwnProperty("passengers")){
 						dataArr = data.passengers;
 						for(i = 0; i < dataArr.length; i++){
 							if(dataArr[i].username == "WEINERMOBILE"){
 								setWeinerMarker(dataArr[i]);
+								var weinerHere = true;
 							}
 							else{
 								setPassengerMarker(dataArr[i]);
@@ -81,6 +79,7 @@
 						for(i = 0; i < dataArr.length; i++){
 							if(dataArr[i].username == "WEINERMOBILE"){
 								setWeinerMarker(dataArr[i]);
+								var weinerHere = true;
 							}
 							else{
 								setCarMarker(dataArr[i]);
@@ -99,10 +98,38 @@
 				icon: "me.png"
 			});
 			meMarker.setMap(map);
+
+			var infoWindowContent = meMarker.title;
+
+			if(false){
+				var distance;
+				for(i = 0; i < dataArr.length; i++){
+					if(dataArr[i].username == "WEINERMOBILE"){
+						var coordW = {lat: dataArr[i].lat, lng: dataArr[i].lng};
+						distance = calcDistance(coordW);
+						break;
+					}
+				}
+				infoWindowContent += " The nearest WeinerMobile is " + distance + " miles away."
+			}
+			else{
+				infoWindowContent += " There's No WeinerMobile to be found."
+			}
+
+			infoWindow.setContent(infoWindowContent);
+			infoWindow.open(map, meMarker);
+
 			google.maps.event.addListener(meMarker, 'click', function() {
-				infoWindow.setContent(meMarker.title);
+				infoWindow.setContent(infoWindowContent);
 				infoWindow.open(map, meMarker);
 			});
+
+		}
+
+		function calcDistance(coordinates){
+			var milesNum = ((google.maps.geometry.spherical.computeDistanceBetween(coordinates,me))/1609.34);
+			var miles = num.toFixed(4);
+			return miles;
 		}
 
 		function setPassengerMarker(Elem){
