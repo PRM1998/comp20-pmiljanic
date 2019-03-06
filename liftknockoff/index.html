@@ -14,14 +14,14 @@
 		var myLng = 0;
 		var me;
 		var mySettings;
+		var carMarker;
+		var weinerMarker;
+		//var passengerMarker;
 		var meMarker;
 		var map;
 		var infoWindow;
 
-		console.log(1);
-		function createMap(){
-			console.log(2);
-			
+		function createMap(){			
 			me = new google.maps.LatLng(myLat, myLng);
 			infoWindow = new google.maps.InfoWindow();
 			mySettings = {
@@ -31,9 +31,7 @@
 			};
 			
 			map = new google.maps.Map(document.getElementById('map'), mySettings);
-			
 			getMyLocation();
-			console.log(3);
 		}
 
 		function getMyLocation(){
@@ -41,57 +39,73 @@
 				navigator.geolocation.getCurrentPosition(function(myPos){
 					myLat = myPos.coords.latitude;
 					myLng = myPos.coords.longitude;
-					console.log(4);
 					makeMap();
 				});
 			}
 			else{
-				console.log(16);
+				console.log("Error getting locale");
 			}
 		}
 
 		function makeMap(){
-			console.log(5);
 			me = new google.maps.LatLng(myLat, myLng);
 			map.panTo(me);
-			console.log(6);
-			marker = new google.maps.Marker({
+			meMarker = new google.maps.Marker({
 				position: me,
-				title: "Here I Am!"
+				title: "Here You Are!",
+				icon: "me.png"
 			});
-			marker.setMap(map);
-			console.log(7);
-			google.maps.event.addListener(marker, 'click', function() {
-				infoWindow.setContent(marker.title);
-				infoWindow.open(map, marker);
+			meMarker.setMap(map);
+			google.maps.event.addListener(meMarker, 'click', function() {
+				infoWindow.setContent(meMarker.title);
+				infoWindow.open(map, meMarker);
 			});
+
 			loadData();
 		}
 
 		function loadData(){
-			console.log(11);
 			request = new XMLHttpRequest();
 			request.open('POST', "https://hans-moleman.herokuapp.com/rides", true);
-			console.log(12);
 			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			var sent = "username=kx8MrRpU&lat=" + myLat + "&lng=" + myLng;
-			console.log(sent);
 			request.send(sent);
 
 			request.onreadystatechange = function(){
 				if (request.readyState == 4 && request.status == 200) {
-					console.log(13);
 					data = JSON.parse(request.responseText);
 					console.log(data);
-					dataArr = data.passengers;
-					console.log(dataArr);
-					usernames = document.getElementById("passengers");
-					//usernames.innerHTML = "";
-					for(i = 0; i < dataArr.length; i++) {
-						dataArr._id
-						//usernames += "<p>" + data[i].passengers + "</p>";
+					var dataArr;
+					if(data.hasOwnProperty("passengers")){
+						dataArr = data.passengers;
+						for(i = 0; i < dataArr.length; i++){
+							var passengerMarker = new google.maps.Marker({
+								position: google.maps.LatLng(dataArr[i].lat, dataArr[i].lng),
+								title: dataArr[i].username,
+								icon: "passenger.png",
+							});
+							console.log(passengerMarker);
+							console.log(i);
+							passengerMarker.setMap(map);
+							google.maps.event.addListener(passengerMarker, 'click', function() {
+								infoWindow.setContent(passengerMarker.title);
+								infoWindow.open(map, passengerMarker);
+							});
+						}
 					}
-					console.log(usernames);
+					else if(data.hasOwnProperty("vehicles")){
+						dataArr = data.vehicles;
+						for(i = 0; i < dataArr.length; i++){
+
+						}
+						console.log("yoooooooo");
+					}
+					console.log(dataArr);
+					/*var ids = "";
+					for(i = 0; i < dataArr.length; i++) {
+						ids += dataArr[i]._id
+					}
+					console.log(ids);*/
 
 				}
 			};
