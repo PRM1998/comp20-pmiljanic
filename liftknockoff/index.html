@@ -1,29 +1,83 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-	<meta charset="utf-8" />
-	<title>Comp20 - Assignment 2</title>
-	<link rel="stylesheet" href="style.css" type="text/css" />
-</head>
 
-<body>
-	<div id = "map"></div>
-	<div id = "infoWindow"></div>
-	<script>
-		var map;
-		function createMap(){
-			map = new google.maps.Map(document.getElementById('map'), {
-				center: {lat: -34.397, lng: 150.644},
-				zoom: 8
-			});
-		}
-	</script>
-
+<head>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9sQaGQMUn1TEZG3C11LjRlpQAppS4WGk&callback=createMap"
     async defer></script>
+	<title>Comp20 - Assignment 2</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="style.css" type="text/css" />
 
+	<script>
+		var myLat = 0;
+		var myLng = 0;
+		var me;
+		var mySettings;
+		var meMarker;
+		var map;
+		var infoWindow;
 
+		console.log(1);
+		function createMap(){
+			console.log(2);
+			
+			me = new google.maps.LatLng(myLat, myLng);
+			infoWindow = new google.maps.InfoWindow();
+			mySettings = {
+				zoom: 8, 
+				center: me,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			
+			map = new google.maps.Map(document.getElementById('map'), mySettings);
+			
+			getMyLocation();
+			console.log(3);
+		}
+
+		function getMyLocation(){
+			if(navigator.geolocation){
+				navigator.geolocation.getCurrentPosition(function(myPos){
+					myLat = myPos.coords.latitude;
+					myLng = myPos.coords.longitude;
+					console.log(4);
+					makeMap();
+				});
+			}
+			else{
+				console.log(16);
+			}
+		}
+
+		function makeMap(){
+			console.log(5);
+			me = new google.maps.LatLng(myLat, myLng);
+				// Update map and go there...
+			map.panTo(me);
+			console.log(6);
+				// Create a marker
+			marker = new google.maps.Marker({
+				position: me,
+				title: "Here I Am!"
+			});
+			marker.setMap(map);
+			console.log(7);
+				// Open info window on click of marker
+			google.maps.event.addListener(marker, 'click', function() {
+				infoWindow.setContent(marker.title);
+				infoWindow.open(map, marker);
+			});
+
+		}
+
+		console.log(10);
+	</script>
+</head>
+
+<body onload = "createMap()">
+
+	<div id = "map"></div>
 
 </body>
 </html>
