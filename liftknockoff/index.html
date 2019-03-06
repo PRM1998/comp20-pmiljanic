@@ -65,7 +65,6 @@
 			request.onreadystatechange = function(){
 				if (request.readyState == 4 && request.status == 200) {
 					data = JSON.parse(request.responseText);
-					console.log(data);
 					if(data.hasOwnProperty("passengers")){
 						dataArr = data.passengers;
 						for(i = 0; i < dataArr.length; i++){
@@ -88,7 +87,6 @@
 							}
 						}
 					}
-					console.log(dataArr);
 				}
 			};
 			setMeMarker();
@@ -105,12 +103,10 @@
 				infoWindow.setContent(meMarker.title);
 				infoWindow.open(map, meMarker);
 			});
-			console.log(meMarker);
 		}
 
 		function setPassengerMarker(Elem){
 			var coordP = {lat: Elem.lat , lng: Elem.lng};
-			console.log(coordP);
 			var passengerMarker = new google.maps.Marker({
 				position: coordP,
 				title: Elem.username,
@@ -125,7 +121,6 @@
 
 		function setCarMarker(Elem){
 			var coordP = {lat: Elem.lat , lng: Elem.lng};
-			console.log(coordP);
 			var carMarker = new google.maps.Marker({
 				position: coordP,
 				title: Elem.username,
@@ -140,7 +135,6 @@
 
 		function setWeinerMarker(Elem){
 			var coordP = {lat: Elem.lat , lng: Elem.lng};
-			console.log(coordP);
 			var weinerMarker = new google.maps.Marker({
 				position: coordP,
 				title: Elem.username,
@@ -152,17 +146,11 @@
 				infoWindow.open(map, weinerMarker);
 			});
 		}
-
-
-		console.log(10);
-
 	</script>
 </head>
 
 <body onload = "createMap()">
-
 	<div id = "map"></div>
-
 </body>
-</html>
 
+</html>
