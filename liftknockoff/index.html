@@ -6,6 +6,7 @@
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9sQaGQMUn1TEZG3C11LjRlpQAppS4WGk&callback=createMap"
     async defer></script>
 	<title>Comp20 - Assignment 2</title>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 	<meta charset="utf-8" />
 	<link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -16,10 +17,11 @@
 		var mySettings;
 		var carMarker;
 		var weinerMarker;
-		//var passengerMarker;
+		var passengerMarkers;
 		var meMarker;
 		var map;
 		var infoWindow;
+		var dataArr;
 
 		function createMap(){			
 			me = new google.maps.LatLng(myLat, myLng);
@@ -50,17 +52,6 @@
 		function makeMap(){
 			me = new google.maps.LatLng(myLat, myLng);
 			map.panTo(me);
-			meMarker = new google.maps.Marker({
-				position: me,
-				title: "Here You Are!",
-				icon: "me.png"
-			});
-			meMarker.setMap(map);
-			google.maps.event.addListener(meMarker, 'click', function() {
-				infoWindow.setContent(meMarker.title);
-				infoWindow.open(map, meMarker);
-			});
-
 			loadData();
 		}
 
@@ -75,46 +66,96 @@
 				if (request.readyState == 4 && request.status == 200) {
 					data = JSON.parse(request.responseText);
 					console.log(data);
-					var dataArr;
 					if(data.hasOwnProperty("passengers")){
 						dataArr = data.passengers;
 						for(i = 0; i < dataArr.length; i++){
-							var passengerMarker = new google.maps.Marker({
-								position: google.maps.LatLng(dataArr[i].lat, dataArr[i].lng),
-								title: dataArr[i].username,
-								icon: "passenger.png",
-							});
-							console.log(passengerMarker);
-							console.log(i);
-							passengerMarker.setMap(map);
-							google.maps.event.addListener(passengerMarker, 'click', function() {
-								infoWindow.setContent(passengerMarker.title);
-								infoWindow.open(map, passengerMarker);
-							});
+							if(dataArr[i].username == "WEINERMOBILE"){
+								setWeinerMarker(dataArr[i]);
+							}
+							else{
+								setPassengerMarker(dataArr[i]);
+							}
 						}
 					}
 					else if(data.hasOwnProperty("vehicles")){
 						dataArr = data.vehicles;
 						for(i = 0; i < dataArr.length; i++){
-
+							if(dataArr[i].username == "WEINERMOBILE"){
+								setWeinerMarker(dataArr[i]);
+							}
+							else{
+								setCarMarker(dataArr[i]);
+							}
 						}
-						console.log("yoooooooo");
 					}
 					console.log(dataArr);
-					/*var ids = "";
-					for(i = 0; i < dataArr.length; i++) {
-						ids += dataArr[i]._id
-					}
-					console.log(ids);*/
-
 				}
 			};
+			setMeMarker();
+		}
 
-			//request.send();
+		function setMeMarker(){
+			meMarker = new google.maps.Marker({
+				position: me,
+				title: "Here You Are!",
+				icon: "me.png"
+			});
+			meMarker.setMap(map);
+			google.maps.event.addListener(meMarker, 'click', function() {
+				infoWindow.setContent(meMarker.title);
+				infoWindow.open(map, meMarker);
+			});
+			console.log(meMarker);
+		}
+
+		function setPassengerMarker(Elem){
+			var coordP = {lat: Elem.lat , lng: Elem.lng};
+			console.log(coordP);
+			var passengerMarker = new google.maps.Marker({
+				position: coordP,
+				title: Elem.username,
+				icon: "passenger.png",
+			});
+			passengerMarker.setMap(map);
+			google.maps.event.addListener(passengerMarker, 'click', function() {
+				infoWindow.setContent(passengerMarker.title);
+				infoWindow.open(map, passengerMarker);
+			});
+		}
+
+		function setCarMarker(Elem){
+			var coordP = {lat: Elem.lat , lng: Elem.lng};
+			console.log(coordP);
+			var carMarker = new google.maps.Marker({
+				position: coordP,
+				title: Elem.username,
+				icon: "car.png",
+			});
+			carMarker.setMap(map);
+			google.maps.event.addListener(carMarker, 'click', function() {
+				infoWindow.setContent(carMarker.title);
+				infoWindow.open(map, carMarker);
+			});
+		}
+
+		function setWeinerMarker(Elem){
+			var coordP = {lat: Elem.lat , lng: Elem.lng};
+			console.log(coordP);
+			var weinerMarker = new google.maps.Marker({
+				position: coordP,
+				title: Elem.username,
+				icon: "weinermobile.png",
+			});
+			weinerMarker.setMap(map);
+			google.maps.event.addListener(weinerMarker, 'click', function() {
+				infoWindow.setContent(weinerMarker.title);
+				infoWindow.open(map, weinerMarker);
+			});
 		}
 
 
 		console.log(10);
+
 	</script>
 </head>
 
