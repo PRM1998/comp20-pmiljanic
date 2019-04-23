@@ -6,4 +6,4 @@
 
 4. That you really can find nearly everything you might need on the web. The mozilla documentation has been incredibly helpful and the documentation associated with heroku and mongodb was integral to me finishing assignment 3.
 
-5. I really want to try working with databases more. As a Chemical Engineer, I feel that more exposure to databases would make me hireable. 
+5. I really want to try working with databases more. As a Chemical Engineer, I feel that more exposure to databases would make me more hireable. 
