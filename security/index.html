@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+  <title>Security</title>
+  <meta charset="utf-8" />
+</head>
+
+<body>
+  <h1>Introduction:</h1>
+  	<p>This is a report of the security flaws and vulnerabilities associated with the "liftknockoff" app (a private car service) made by Gabrielle Beaulieu. I was hired to locate such flaws and notify the appropriate parties of their existence and parameters. Pending contract, I believe that I may in fact be the one to correct these security flaws.</p>
+
+  <h1>Methodology:</h1>
+  	<p>To begin, I attempted to broach the user data from the app. Following this, I sought to insert misinformation into the server's databases. Finally I inspected the code itself for obvious flaws.</p>
+
+  <h1>Abstract of Findings:</h1>
+	<p></p>
+
+  <h1>Issues Found:</h1>
+  	<h2>
+		<h3>Could Retrieve User Data:</h3>
+			<p>
+				With the use of the app's get route associated with "/passenger.json" it was found that one could retrieve all the user data by inserting a query string that utilized the mongodb operator $ne (not equal). This get route returns the passenger data associated with a given username (pulled from a query string). The url used in the browser was: https://obscure-lowlands-79425.herokuapp.com/passenger.json?username[$ne]=123. This flaw functions as it returns user data for all usernames whose username is not "123". Several usernames (aside from 123) were tested to ensure that all user data was being retrieved. This issue is fairly severe as malicious hackers could use the location data to track users and observe from where and to they go. This could lead to physical harm of the users or drivers in the wrong hands. To address this, between lines 96 and 97 one could insert code such as: 
+			</p><img src="code1.JPG"></p>
+
+			<p>	which checks to see if the program is responding with multiple users data, or only one. This would require the adjustment of the existent conditionals to ensure that only one response would be sent. Also note that this is sample and simple code, and there could be significantly more succinct manners to correct this.
+			</p>
+			<p>Below is a photo exemplifying the issue:</p>
+
+			<p><img src="screenshot1.JPG"></p>
+  	</h2>
+
+  <h1>Conclusion:</h1>
+  	<p></p>
+
+  <h1>References:</h1>
+  	<ol></ol>
+
+
+</body>
+</html>
